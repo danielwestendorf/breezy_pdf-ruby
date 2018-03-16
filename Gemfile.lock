@@ -9,8 +9,12 @@ GEM
   specs:
     mini_portile2 (2.3.0)
     minitest (5.11.3)
+    minitest-stub-const (0.6)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
+    rack (2.0.4)
+    rack-test (0.8.3)
+      rack (>= 1.0, < 3)
     rake (10.5.0)
 
 PLATFORMS
@@ -20,6 +24,8 @@ DEPENDENCIES
   breezy_pdf!
   bundler (~> 1.16)
   minitest (~> 5.0)
+  minitest-stub-const
+  rack-test
   rake (~> 10.0)
 
 BUNDLED WITH

@@ -7,6 +7,8 @@ module BreezyPDF
   autoload :Request, "breezy_pdf/request"
   autoload :Client, "breezy_pdf/client"
   autoload :Response, "breezy_pdf/response"
+  autoload :Middleware, "breezy_pdf/middleware"
+  autoload :Interceptor, "breezy_pdf/interceptor"
 
   mattr_accessor :secret_api_key
   @@secret_api_key = nil
@@ -16,6 +18,9 @@ module BreezyPDF
 
   mattr_accessor :base_url
   @@base_url = "https://www.breezypdf.com/api"
+
+  mattr_accessor :middleware_path_matchers
+  @@middleware_path_matchers = [/\.pdf$/]
 
   def self.setup
     yield self

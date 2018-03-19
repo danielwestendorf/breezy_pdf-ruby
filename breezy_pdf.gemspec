@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "breezy_pdf/version"
@@ -9,8 +11,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Daniel Westendorf"]
   spec.email         = ["daniel@prowestech.com"]
 
-  spec.summary       = %q{Ruby client for BreezyPDF.com}
-  spec.description   = %q{Client and Rack Middlware which submits URL's and HTML fragments to be rendered as a PDF}
+  spec.summary       = "Ruby client for BreezyPDF.com"
+  spec.description   = "Client and Rack Middlware which submits URL's and HTML fragments to " \
+                       "be rendered as a PDF"
   spec.homepage      = "https://www.breezypdf.com"
   spec.license       = "LGPL-3.0"
 
@@ -28,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "minitest-stub-const"
   spec.add_development_dependency "rack-test"
+  spec.add_development_dependency "rubocop", "0.49"
 end

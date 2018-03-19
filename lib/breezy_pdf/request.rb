@@ -1,6 +1,7 @@
-require "json"
+# frozen_string_literal: true
 
 module BreezyPDF
+  # Request conversion of a public URL to PDF
   class Request
     def initialize(public_url)
       @public_url = public_url

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require "net/http"
 require "uri"
 
 module BreezyPDF
+  # HTTP Client for BreezyPDF API
   class Client
     def post(path, body)
       uri = URI.parse(BreezyPDF.base_url + path)

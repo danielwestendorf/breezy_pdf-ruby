@@ -1,14 +1,21 @@
-require "breezy_pdf/util"
+# frozen_string_literal: true
 
+require "breezy_pdf/util"
+require "breezy_pdf/gzip"
+
+# :nodoc
 module BreezyPDF
   extend BreezyPDF::Util
 
-  autoload :VERSION, "breezy_pdf/version"
-  autoload :Request, "breezy_pdf/request"
-  autoload :Client, "breezy_pdf/client"
-  autoload :Response, "breezy_pdf/response"
-  autoload :Middleware, "breezy_pdf/middleware"
+  autoload :VERSION,     "breezy_pdf/version"
+  autoload :Request,     "breezy_pdf/request"
+  autoload :Client,      "breezy_pdf/client"
+  autoload :Response,    "breezy_pdf/response"
+  autoload :Middleware,  "breezy_pdf/middleware"
   autoload :Interceptor, "breezy_pdf/interceptor"
+  autoload :Uploads,     "breezy_pdf/uploads"
+
+  BreezyPDFError = Class.new(StandardError)
 
   mattr_accessor :secret_api_key
   @@secret_api_key = nil

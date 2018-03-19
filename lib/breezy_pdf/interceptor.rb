@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module BreezyPDF
+  # Intercept a Rack request
   class Interceptor
     attr_reader :app, :env
 
@@ -13,7 +16,7 @@ module BreezyPDF
 
         [
           302,
-          {"Location" => response.download_url, "Content-Type" => "text/html", "Content-Length" => "0"},
+          { "Location" => response.download_url, "Content-Type" => "text/html", "Content-Length" => "0" },
           []
         ]
       else

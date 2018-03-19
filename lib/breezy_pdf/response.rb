@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module BreezyPDF
+  # API HTTP Response
   class Response
     def initialize(http_response)
       @http_response = http_response

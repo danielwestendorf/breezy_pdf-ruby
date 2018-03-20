@@ -1,19 +1,26 @@
 # frozen_string_literal: true
 
-require "net/http"
-require "uri"
-
 module BreezyPDF
   # HTTP Client for BreezyPDF API
   class Client
     def post(path, body)
       uri = URI.parse(BreezyPDF.base_url + path)
-      http = Net::HTTP.new(uri.host, uri.port)
+      http = Net::HTTP.new(uri.host, uri.port).tap { |h| h.use_ssl = true }
       request = Net::HTTP::Post.new(uri.request_uri, headers)
 
       request.body = body.to_json
 
-      http.request(request)
+      Response.new http.request(request)
+    end
+
+    def put(path, body)
+      uri = URI.parse(BreezyPDF.base_url + path)
+      http = Net::HTTP.new(uri.host, uri.port).tap { |h| h.use_ssl = true }
+      request = Net::HTTP::Put.new(uri.request_uri, headers)
+
+      request.body = body.to_json
+
+      Response.new http.request(request)
     end
 
     private

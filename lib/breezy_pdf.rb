@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require "uri"
+require "net/http"
+require "json"
+require "nokogiri"
+
 require "breezy_pdf/util"
 require "breezy_pdf/gzip"
 

@@ -5,7 +5,7 @@ require "test_helper"
 class BreezyPDF::RequestTest < BreezyTest
   def test_submit
     client_mock = MiniTest::Mock.new
-    client_mock.expect(:post, OpenStruct.new, ["/pdf/public_urls", url_to_render: "blah"])
+    client_mock.expect(:post, BreezyPDF::Response.new(OpenStruct.new), ["/pdf/public_urls", url_to_render: "blah"])
 
     request = tested_class.new("blah")
     request.stub(:client, client_mock) do

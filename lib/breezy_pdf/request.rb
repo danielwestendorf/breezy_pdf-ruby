@@ -8,7 +8,7 @@ module BreezyPDF
     end
 
     def submit
-      Response.new client.post("/pdf/public_urls", url_to_render: @public_url)
+      client.post("/pdf/public_urls", url_to_render: @public_url)
     end
 
     private

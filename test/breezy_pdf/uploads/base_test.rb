@@ -5,10 +5,11 @@ require "test_helper"
 class BreezyPDF::Uploads::BaseTest < BreezyTest
   def test_public_url
     resource = {
-      "presigned_upload_url" => "https://example.com/upload",
+      "presigned_upload_url" =>    "https://example.com/upload",
       "presigned_upload_fields" => {},
-      "resource_url" => "/api/uploads/123",
-      "presigned_url" => "https://example.com/123/image.png"
+      "resource_url" =>            "/api/uploads/123",
+      "presigned_url" =>           "https://example.com/123/image.png",
+      "id" =>                      "123"
     }
 
     instance = tested_class.new("image.png", "image/png", fixture("file.png").path)
@@ -17,10 +18,10 @@ class BreezyPDF::Uploads::BaseTest < BreezyTest
     # Presign HTTP Request
     client_mock.expect(
       :post, OpenStruct.new(resource),
-      ["/uploads", filename: "image.png", size: fixture("file.png").size]
+      ["/uploads", filename: "image.png", size: fixture("file.png").size, content_type: "image/png"]
     )
     # Complete HTTP Request
-    client_mock.expect(:put, true, [resource["resource_url"]])
+    client_mock.expect(:put, true, ["/uploads/#{resource["id"]}", {}])
 
     # Upload HTTP Request
     request_mock = MiniTest::Mock.new

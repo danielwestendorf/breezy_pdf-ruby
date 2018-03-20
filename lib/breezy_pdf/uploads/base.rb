@@ -13,13 +13,13 @@ module BreezyPDF::Uploads
       upload!
       complete_upload!
 
-      resource["presigned_url"]
+      resource.presigned_url
     end
 
     private
 
     def client
-      @client ||= Client.new
+      @client ||= BreezyPDF::Client.new
     end
 
     def file
@@ -27,7 +27,7 @@ module BreezyPDF::Uploads
     end
 
     def complete_upload!
-      client.put(resource["resource_url"])
+      client.put("/uploads/#{resource.id}", {})
     rescue Net::HTTP => error
       raise CompletionError, error.message
     end
@@ -43,13 +43,13 @@ module BreezyPDF::Uploads
     end
 
     def resource
-      @resource ||= client.post("/uploads", filename: @filename, size: file.size)
+      @resource ||= client.post("/uploads", filename: @filename, size: file.size, content_type: @content_type)
     rescue Net::HTTP => error
       raise PresignError, error.message
     end
 
     def upload_uri
-      @upload_uri ||= URI.parse(resource["presigned_upload_url"])
+      @upload_uri ||= URI.parse(resource.presigned_upload_url)
     end
 
     def upload_http
@@ -58,7 +58,7 @@ module BreezyPDF::Uploads
 
     def upload_request
       @upload_request ||= Net::HTTP::Post.new(upload_uri.request_uri).tap do |post|
-        file_form_data = FileFormData.new(resource["presigned_upload_fields"], @content_type, @filename, file)
+        file_form_data = FileFormData.new(resource.presigned_upload_fields, @content_type, @filename, file)
 
         post.content_type = "multipart/form-data; boundary=#{file_form_data.boundary}"
         post.body = file_form_data.data

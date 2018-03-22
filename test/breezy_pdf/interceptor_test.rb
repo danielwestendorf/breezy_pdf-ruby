@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class BreezyPDF::InterceptorTest < Minitest::Test
+class BreezyPDF::InterceptorTest < BreezyTest
   def test_non_matching_uri
     env = {
       "REQUEST_URI"    => "/thing",
@@ -12,7 +12,7 @@ class BreezyPDF::InterceptorTest < Minitest::Test
     app = MiniTest::Mock.new
     app.expect(:call, true, [env])
 
-    BreezyPDF::Interceptor.new(app, env).intercept!
+    tested_class.new(app, env).intercept!
 
     assert app.verify
   end
@@ -25,12 +25,15 @@ class BreezyPDF::InterceptorTest < Minitest::Test
     app = MiniTest::Mock.new
     app.expect(:call, true, [env])
 
-    BreezyPDF::Interceptor.new(app, env).intercept!
+    tested_class.new(app, env).intercept!
 
     assert app.verify
   end
 
-  def test_matching_uri_and_method
+  def test_matching_uri_and_method_for_public_url
+    BreezyPDF.treat_urls_as_private = false
+
+    app = OpenStruct.new(call: true)
     env = {
       "REQUEST_URI"     => "/thing.pdf",
       "REQUEST_METHOD"  => "GET",
@@ -41,19 +44,13 @@ class BreezyPDF::InterceptorTest < Minitest::Test
       "QUERY_STRING"    => "a=b"
     }
 
-    response = OpenStruct.new(code: "201", body: { download_url: "abc" }.to_json)
+    intercept_mock = MiniTest::Mock.new
+    intercept_mock.expect(:new, OpenStruct.new(call: []), [app, env])
 
-    mock_submit = MiniTest::Mock.new
-    mock_submit.expect(:submit, response)
-
-    mock_request = MiniTest::Mock.new
-    mock_request.expect(:new, mock_submit, ["https://example.com:443/thing.pdf?a=b"])
-
-    BreezyPDF.stub_const(:Request, mock_request) do
-      BreezyPDF::Interceptor.new(nil, env).intercept!
+    BreezyPDF::Intercept.stub_const(:PublicUrl, intercept_mock) do
+      tested_class.new(app, env).intercept!
     end
 
-    assert mock_request.verify
-    assert mock_submit.verify
+    assert intercept_mock.verify
   end
 end

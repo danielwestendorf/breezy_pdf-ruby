@@ -12,24 +12,13 @@ module BreezyPDF
 
     def intercept!
       if intercept?
-        response = Request.new(public_url).submit
-
-        [
-          302,
-          { "Location" => response.download_url, "Content-Type" => "text/html", "Content-Length" => "0" },
-          []
-        ]
+        intercept.new(@app, @env).call
       else
         app.call(env)
       end
     end
 
     private
-
-    def public_url
-      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}:#{env['SERVER_PORT']}" \
-      "#{env['PATH_INFO']}?#{env['QUERY_STRING']}"
-    end
 
     def intercept?
       get? && matching_uri?
@@ -45,6 +34,14 @@ module BreezyPDF
 
     def matchers
       @matchers ||= BreezyPDF.middleware_path_matchers
+    end
+
+    def intercept
+      if BreezyPDF.treat_urls_as_private
+        BreezyPDF::Intercept::PrivateUrl
+      else
+        BreezyPDF::Intercept::PublicUrl
+      end
     end
   end
 end

@@ -3,7 +3,7 @@
 require "test_helper"
 require "json"
 
-class BreezyPDF::ResponseTest < Minitest::Test
+class BreezyPDF::ResponseTest < BreezyTest
   def test_success?
     assert BreezyPDF::Response.new(OpenStruct.new(code: "200"))
   end

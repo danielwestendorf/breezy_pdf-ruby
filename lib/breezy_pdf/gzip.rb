@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "zlib"
-require "stringio"
-
 module BreezyPDF
   # https://github.com/rails/rails/blob/master/activesupport/lib/active_support/gzip.rb
   module Gzip

@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class BreezyPDF::ClientTest < Minitest::Test
+class BreezyPDF::ClientTest < BreezyTest
   def test_post
     body = { a: 1 }
     http_mock = MiniTest::Mock.new
@@ -14,7 +14,7 @@ class BreezyPDF::ClientTest < Minitest::Test
 
     Net::HTTP.stub(:new, http_mock) do
       Net::HTTP::Post.stub(:new, request_mock) do
-        BreezyPDF::Client.new.post("/test", body)
+        tested_class.new.post("/test", body)
       end
     end
 
@@ -33,7 +33,7 @@ class BreezyPDF::ClientTest < Minitest::Test
 
     Net::HTTP.stub(:new, http_mock) do
       Net::HTTP::Put.stub(:new, request_mock) do
-        BreezyPDF::Client.new.put("/test", body)
+        tested_class.new.put("/test", body)
       end
     end
 

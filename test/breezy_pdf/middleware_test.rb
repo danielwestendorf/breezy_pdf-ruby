@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class BreezyPDF::MiddlewareTest < Minitest::Test
+class BreezyPDF::MiddlewareTest < BreezyTest
   def test_invokes_interceptor
     mock_intercept = MiniTest::Mock.new
     mock_intercept.expect(:intercept!, true)
@@ -11,7 +11,7 @@ class BreezyPDF::MiddlewareTest < Minitest::Test
     mock_interceptor.expect(:new, mock_intercept, [1, 2])
 
     BreezyPDF.stub_const(:Interceptor, mock_interceptor) do
-      BreezyPDF::Middleware.new(1).call(2)
+      tested_class.new(1).call(2)
     end
 
     assert mock_interceptor.verify

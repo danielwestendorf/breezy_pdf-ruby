@@ -2,7 +2,7 @@
 
 module BreezyPDF
   # Request conversion of a public URL to PDF
-  class Request
+  class RenderRequest
     def initialize(public_url)
       @public_url = public_url
     end

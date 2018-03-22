@@ -46,6 +46,9 @@ module BreezyPDF
   mattr_accessor :upload_assets
   @@upload_private_assets = true
 
+  mattr_accessor :extract_metadata
+  @@extract_metadata = true
+
   mattr_accessor :asset_selectors
   @@asset_selectors = %w(img script link[rel="stylesheet"])
 

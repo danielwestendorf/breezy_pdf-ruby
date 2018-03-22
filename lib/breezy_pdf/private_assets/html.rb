@@ -20,6 +20,10 @@ module BreezyPDF::PrivateAssets
       file.path
     end
 
+    def metadata
+      @metadata ||= BreezyPDF.extract_metadata ? Hash[*meta_tags] : {}
+    end
+
     private
 
     def file
@@ -35,6 +39,16 @@ module BreezyPDF::PrivateAssets
       else
         @html_fragment
       end
+    end
+
+    def parsed_document
+      @parsed_document ||= Nokogiri::HTML(@html_fragment)
+    end
+
+    def meta_tags
+      @meta_tags ||= parsed_document.css(%(meta[name^="breezy-pdf-"])).collect do |tag|
+        [tag["name"].gsub(/^breezy\-pdf\-/, ""), tag["content"]]
+      end.flatten
     end
   end
 end

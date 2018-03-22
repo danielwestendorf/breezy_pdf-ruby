@@ -25,6 +25,28 @@ class BreezyPDF::PrivateAssets::HTMLTest < BreezyTest
     assert_equal contents, File.read(instance.file_path)
   end
 
+  def test_metadata_when_enabled
+    BreezyPDF.extract_metadata = true
+
+    contents = fixture("metadata.html").read
+    instance = tested_class.new("", contents)
+
+    assert_equal "2", instance.metadata["head"]
+    assert_equal "3", instance.metadata["alt"]
+    assert_equal "4", instance.metadata["body"]
+  end
+
+  def test_metadata_when_disabled
+    BreezyPDF.extract_metadata = false
+
+    contents = fixture("metadata.html").read
+    instance = tested_class.new("", contents)
+
+    assert_nil instance.metadata["head"]
+    assert_nil instance.metadata["alt"]
+    assert_nil instance.metadata["body"]
+  end
+
   def test_file_contents_with_uploading_of_assets_turned_on
     BreezyPDF.upload_assets = true
 

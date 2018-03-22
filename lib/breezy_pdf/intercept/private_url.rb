@@ -4,7 +4,7 @@ module BreezyPDF::Intercept
   # :nodoc
   class PrivateUrl < Base
     def call
-      response = BreezyPDF::RenderRequest.new(public_url).submit
+      response = BreezyPDF::RenderRequest.new(public_url, html_private_asset.metadata).submit
 
       [
         302,

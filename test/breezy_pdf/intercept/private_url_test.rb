@@ -20,7 +20,7 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
     mock_submit.expect(:submit, response)
 
     mock_request = MiniTest::Mock.new
-    mock_request.expect(:new, mock_submit, ["xyz"])
+    mock_request.expect(:new, mock_submit, ["xyz", {}])
 
     [mock_public_url, mock_upload, mock_request, mock_submit]
   end

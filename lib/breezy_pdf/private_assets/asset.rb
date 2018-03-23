@@ -9,7 +9,7 @@ module BreezyPDF::PrivateAssets
     end
 
     def content_type
-      file.content_type
+      io_object.content_type
     end
 
     def filename
@@ -23,7 +23,17 @@ module BreezyPDF::PrivateAssets
     private
 
     def file
-      @file ||= open(asset_url)
+      @file ||= if io_object.is_a?(StringIO)
+                  Tempfile.new.tap do |f|
+                    f.write io_object.to_s
+                  end
+                else
+                  io_object
+                end
+    end
+
+    def io_object
+      @io_object ||= open(asset_url)
     end
 
     def asset_url

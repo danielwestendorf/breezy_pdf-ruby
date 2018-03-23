@@ -7,6 +7,7 @@ class BreezyPDF::PrivateAssets::AssetTest < BreezyTest
     @file_mock = MiniTest::Mock.new
     @file_mock.expect(:path, "abc")
     @file_mock.expect(:content_type, "xyz")
+    @file_mock.expect(:is_a?, false, [StringIO])
   end
 
   def test_content_type
@@ -23,22 +24,14 @@ class BreezyPDF::PrivateAssets::AssetTest < BreezyTest
   def test_file_path
     instance = tested_class.new("", "")
     instance.stub(:open, @file_mock) do
-      assert_equal "xyz", instance.content_type
+      assert_equal "abc", instance.file_path
     end
   end
-  # def test_filename
-  #   instance = tested_class.new("")
-  #   assert_equal instance.filename, instance.filename
-  # end
 
-  # def test_file_path
-  #   assert_match(/\.html/, tested_class.new("").file_path)
-  # end
-
-  # def test_file_contents
-  #   contents = "<h1>Hey!</h1>"
-  #   instance = tested_class.new(contents)
-
-  #   assert_equal contents, File.read(instance.file_path)
-  # end
+  def test_file_path_with_string_io_object
+    instance = tested_class.new("", "")
+    instance.stub(:open, StringIO.new("bob")) do
+      assert_match /\/\w+\//, instance.file_path
+    end
+  end
 end

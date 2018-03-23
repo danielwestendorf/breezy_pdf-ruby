@@ -31,7 +31,7 @@ class BreezyPDF::PrivateAssets::AssetTest < BreezyTest
   def test_file_path_with_string_io_object
     instance = tested_class.new("", "")
     instance.stub(:open, StringIO.new("bob")) do
-      assert_match /\/\w+\//, instance.file_path
+      assert_match %r{\/\w+\/}, instance.file_path
     end
   end
 end

@@ -10,6 +10,7 @@ require "stringio"
 require "open-uri"
 
 require "nokogiri"
+require "concurrent"
 
 require "breezy_pdf/util"
 require "breezy_pdf/gzip"
@@ -44,7 +45,7 @@ module BreezyPDF
   @@treat_urls_as_private = true
 
   mattr_accessor :upload_assets
-  @@upload_private_assets = true
+  @@upload_assets = true
 
   mattr_accessor :extract_metadata
   @@extract_metadata = true
@@ -57,6 +58,9 @@ module BreezyPDF
     href: %r{^\/\w+},
     src:  %r{^\/\w+}
   }
+
+  mattr_accessor :threads
+  @@threads = 4
 
   def self.setup
     yield self

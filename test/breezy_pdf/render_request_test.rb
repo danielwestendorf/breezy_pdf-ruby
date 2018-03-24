@@ -6,7 +6,7 @@ class BreezyPDF::RenderRequestTest < BreezyTest
   def test_submit
     client_mock = MiniTest::Mock.new
     client_mock.expect(
-      :post, BreezyPDF::Response.new(OpenStruct.new), ["/pdf/public_urls", url_to_render: "blah"]
+      :post, BreezyPDF::Response.new(OpenStruct.new), ["/pdf/public_urls", url_to_render: "blah", metadata: {}]
     )
 
     request = tested_class.new("blah")

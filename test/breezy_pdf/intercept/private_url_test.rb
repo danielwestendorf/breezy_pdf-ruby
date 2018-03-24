@@ -4,7 +4,15 @@ require "test_helper"
 
 class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
   def app
-    proc { [200, {}, %w[<html><body><h1>Hey!</h1></body></html]] }
+    proc { [200, {}, [fixture("metadata.html").read]] }
+  end
+
+  def metadata
+    {
+      "head" => "2",
+      "alt"  => "3",
+      "body" => "4"
+    }
   end
 
   def mocks
@@ -20,7 +28,7 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
     mock_submit.expect(:submit, response)
 
     mock_request = MiniTest::Mock.new
-    mock_request.expect(:new, mock_submit, ["xyz", {}])
+    mock_request.expect(:new, mock_submit, ["xyz", metadata])
 
     [mock_public_url, mock_upload, mock_request, mock_submit]
   end

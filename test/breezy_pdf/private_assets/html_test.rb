@@ -3,6 +3,11 @@
 require "test_helper"
 
 class BreezyPDF::PrivateAssets::HTMLTest < BreezyTest
+  def teardown
+    BreezyPDF.upload_assets = true
+    BreezyPDF.extract_metadata = true
+  end
+
   def test_content_type
     assert_equal "text/html", tested_class.new("", "").content_type
   end

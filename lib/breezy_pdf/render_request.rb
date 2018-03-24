@@ -9,7 +9,7 @@ module BreezyPDF
     end
 
     def submit
-      client.post("/pdf/public_urls", url_to_render: @public_url)
+      client.post("/pdf/public_urls", url_to_render: @public_url, metadata: @metadata.to_h)
     end
 
     private

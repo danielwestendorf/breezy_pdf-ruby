@@ -28,7 +28,7 @@ module BreezyPDF
   autoload :Uploads,       "breezy_pdf/uploads"
   autoload :Intercept,     "breezy_pdf/intercept"
   autoload :PrivateAssets, "breezy_pdf/private_assets"
-  autoload :PublicizeHTML, "breezy_pdf/publicize_html"
+  autoload :HTML,          "breezy_pdf/html"
 
   BreezyPDFError = Class.new(StandardError)
 
@@ -61,6 +61,12 @@ module BreezyPDF
 
   mattr_accessor :threads
   @@threads = 4
+
+  mattr_accessor :filter_elements
+  @@filter_elements = false
+
+  mattr_accessor :filter_elements_selector
+  @@filtered_element_selectors = %(.breezy-pdf-remove)
 
   def self.setup
     yield self

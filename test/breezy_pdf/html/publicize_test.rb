@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class BreezyPDF::PublicizeHTMLTest < BreezyTest
+class BreezyPDF::HTML::PublicizeTest < BreezyTest
   def fragment
     @fragment ||= fixture("example.html").read
   end

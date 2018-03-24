@@ -58,7 +58,7 @@ class BreezyPDF::PrivateAssets::HTMLTest < BreezyTest
       :new, OpenStruct.new(public_fragment: contents), [host, contents]
     )
 
-    BreezyPDF.stub_const(:PublicizeHTML, publicize_mock) do
+    BreezyPDF::HTML.stub_const(:Publicize, publicize_mock) do
       instance = tested_class.new(host, contents)
       assert_equal contents, File.read(instance.file_path)
     end

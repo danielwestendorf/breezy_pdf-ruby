@@ -28,21 +28,20 @@ module BreezyPDF::PrivateAssets
 
     def file
       @file ||= Tempfile.new(filename).tap do |f|
-        f.write(html_fragment)
+        f.write(modified_html_fragment)
         f.rewind
       end
     end
 
-    def html_fragment
-      if BreezyPDF.upload_assets
-        BreezyPDF::PublicizeHTML.new(@base_url, @html_fragment).public_fragment
-      else
-        @html_fragment
+    def modified_html_fragment
+      @modified_html_fragmentt ||= @html_fragment.tap do |fragment|
+        fragment = BreezyPDF::HTML::Publicize.new(@base_url, fragment).public_fragment if BreezyPDF.upload_assets
+        fragment = BreezyPDF::HTML::Strip.new(fragment).stripped_fragment if BreezyPDF.filter_elements
       end
     end
 
     def parsed_document
-      @parsed_document ||= Nokogiri::HTML(@html_fragment)
+      @parsed_document ||= Nokogiri::HTML(modified_html_fragment)
     end
 
     def meta_tags

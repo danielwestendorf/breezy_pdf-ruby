@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module BreezyPDF
+module BreezyPDF::HTML
   # Replace assets with uploaded URL's
-  class PublicizeHTML
+  class Publicize
     def initialize(base_url, html_fragment)
       @base_url      = base_url
       @html_fragment = html_fragment

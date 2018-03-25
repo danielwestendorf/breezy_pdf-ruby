@@ -36,7 +36,7 @@ module BreezyPDF
   @@secret_api_key = nil
 
   mattr_accessor :base_url
-  @@base_url = "https://www.breezypdf.com/api"
+  @@base_url = "https://breezypdf.com/api"
 
   mattr_accessor :middleware_path_matchers
   @@middleware_path_matchers = [/\.pdf$/]

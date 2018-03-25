@@ -1,5 +1,7 @@
 # BreezyPDF
 
+[![Build Status](https://travis-ci.org/danielwestendorf/breezy_pdf-ruby.svg?branch=master)](https://travis-ci.org/danielwestendorf/breezy_pdf-ruby) [![Gem Version](https://badge.fury.io/rb/breezy_pdf.svg)](https://badge.fury.io/rb/breezy_pdf)
+
 Make PDF generation a breezy-easy.
 
 No binaries to install. No reinventing the wheel to match HTML layouts. Just simple HTML to PDF generation as a Rack Middleware with support for modern CSS and JavaScript. `.pdf` any of your app's URL's for fast, out-of-process, PDF generation of that URL. Support for public and authenticated views, local development and production.

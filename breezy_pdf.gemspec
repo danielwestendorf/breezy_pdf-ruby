@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Ruby client for BreezyPDF.com"
   spec.description   = "Client and Rack Middlware which submits URL's and HTML fragments to " \
                        "be rendered as a PDF"
-  spec.homepage      = "https://www.breezypdf.com"
+  spec.homepage      = "https://breezypdf.com"
   spec.license       = "LGPL-3.0"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

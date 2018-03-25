@@ -1,6 +1,14 @@
 sudo: false
 language: ruby
 rvm:
-  - 2.4.2
-  - 2.5.0
+- 2.4.2
+- 2.5.0
 before_install: gem install bundler -v 1.16.0
+deploy:
+  provider: rubygems
+  api_key:
+    secure: DnR2ATZg+zPHocfZwSkMn5nWpBVdS/JdWgRfIq1uFjob4zeP+0UPSbTZmrJt3GJYEUxsneyhv2bwtB+9nxgRaPVB3MuxXPAQxBilVwbKNQuqdK348jdgzlLskBGTu7LGJeh6V9VyBVRlGZNptIrhflw6tnSwK2AfvQEkObnNGiaONauA01lZGW6fDgMBwaSenCKSifNiiZ8vuH0O0fCgObYy4olxwoIs4HpprJhXnEYu+OkYe7gVDF+COj/g41UxiC3t3RwAZ3ly2Y6bOM7+BBLTgqQnR/K68QpwS5j2i9IPGaoeG+vY0V9a8fTL2pJVF1TYyLqFHK8hqijo9RAWAckJx7UlmisserO7bxIfS0Td/up8jMisPvDELswFRRIGt6pNzgnfO8S1cIRx/TivBmv+nRxbicNLV+MVpLwcyIpfLhydgpYnH8anzvkOJELKSaV7O3MKftDY4jKfO6aa8YemXvpY9OGVTNvOm9bUypkus8dRvbIj5GyNe+gvlithf9ikeZzOL9Z99PuoLWRbMrqDK2drQWVjZaikZlN/q0vJ6pXK511H+QWiX5Hc37b4C1LLDjtUTkJeFW0EN8YnYtJQzP740jYhC60jPYTaF/oXJEHUbG2FC/QCQ20LwyAlpqtFEFiXErA4gUI0m83tq+ew20ueVFSMjASLyuB1/Z8=
+  gem: breezy_pdf
+  on:
+    tags: true
+    repo: danielwestendorf/breezy_pdf-ruby

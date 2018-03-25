@@ -243,7 +243,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/breezy_pdf.
+Bug reports and pull requests are welcome on GitHub at https://github.com/danielwestendorf/breezy_pdf.
 
 ## License
 

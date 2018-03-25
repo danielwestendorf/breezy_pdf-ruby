@@ -53,13 +53,7 @@ module BreezyPDF::Intercept
     end
 
     def path
-      path = env["PATH_INFO"]
-
-      BreezyPDF.middleware_path_matchers.each do |regex|
-        path = path.gsub(regex, "")
-      end
-
-      path
+      env["PATH_INFO"].gsub(/\.pdf/, "")
     end
 
     def base_url

@@ -16,8 +16,9 @@ module BreezyPDF::HTML
     private
 
     def strip!
-      parsed_document.css(filter_elements_selector).each do |filtered_element|
-        filtered_element.remove
+      BreezyPDF.filter_elements_selectors.each do |selector|
+        BreezyPDF.logger.info("[BreezyPDF] Stripping out elements matching selector `#{selector}`")
+        parsed_document.css(selector).each(&:remove)
       end
     end
 

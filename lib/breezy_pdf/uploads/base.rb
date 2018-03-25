@@ -10,9 +10,11 @@ module BreezyPDF::Uploads
     end
 
     def public_url
+      BreezyPDF.logger.info(%([BreezyPDF] Starting private asset upload for #{@filename}))
       upload!
       complete_upload!
 
+      BreezyPDF.logger.info(%([BreezyPDF] Private asset upload for #{@filename} completed))
       resource.presigned_url
     end
 
@@ -27,24 +29,30 @@ module BreezyPDF::Uploads
     end
 
     def complete_upload!
+      BreezyPDF.logger.info(%([BreezyPDF] Initiating completion of private asset upload for #{@filename}))
       client.put("/uploads/#{resource.id}", {})
     rescue Net::HTTP => error
+      BreezyPDF.logger.fatal(%([BreezyPDF] Unable to complete private asset upload for #{@filename}))
       raise CompletionError, error.message
     end
 
     def upload!
+      BreezyPDF.logger.info(%([BreezyPDF] Initiating private asset upload of #{@filename}))
       upload_response = upload_http.request(upload_request)
 
       return if upload_response.code.to_i == 204
 
       raise UploadError, "HTTP Status: #{upload_response.code}: #{upload_response.body}"
     rescue Net::HTTP => error
+      BreezyPDF.logger.fatal(%([BreezyPDF] Unable to upload private asset #{@filename}))
       raise UploadError, error.message
     end
 
     def resource
+      BreezyPDF.logger.info(%([BreezyPDF] Initiating presign of private asset upload #{@filename}))
       @resource ||= client.post("/uploads", filename: @filename, size: file.size, content_type: @content_type)
     rescue Net::HTTP => error
+      BreezyPDF.logger.fatal(%([BreezyPDF] Unable to presign private asset upload for #{@filename}))
       raise PresignError, error.message
     end
 

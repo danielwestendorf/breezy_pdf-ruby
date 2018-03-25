@@ -12,6 +12,7 @@ module BreezyPDF
 
     def intercept!
       if intercept?
+        BreezyPDF.logger.info("[BreezyPDF] Intercepting request for PDF rendering")
         intercept.new(@app, @env).call
       else
         app.call(env)

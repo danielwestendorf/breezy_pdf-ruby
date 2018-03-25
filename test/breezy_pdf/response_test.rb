@@ -13,7 +13,7 @@ class BreezyPDF::ResponseTest < BreezyTest
   end
 
   def test_download_url
-    fake_http_response = OpenStruct.new(body: { download_url: "abc" }.to_json)
+    fake_http_response = OpenStruct.new(code: "200", body: { download_url: "abc" }.to_json)
     response = BreezyPDF::Response.new(fake_http_response)
     assert_equal "abc", response.download_url
   end

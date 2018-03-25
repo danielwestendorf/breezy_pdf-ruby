@@ -39,6 +39,7 @@ module BreezyPDF::Uploads
     end
 
     def file_data
+      BreezyPDF.logger.info(%([BreezyPDF] Compressing file contents for #{@filename}))
       [
         "--#{boundary}\r\n",
         %(Content-Disposition: form-data; name="file"; filename="#{@filename}"\r\n),

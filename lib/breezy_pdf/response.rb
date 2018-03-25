@@ -5,10 +5,11 @@ module BreezyPDF
   class Response
     def initialize(http_response)
       @http_response = http_response
+      BreezyPDF.logger.fatal("[BreezyPDF] Network request failed: #{@http_response.body}") if failure?
     end
 
     def success?
-      code >= 200 && code < 300
+      code >= 200 && code < 400
     end
 
     def failure?
@@ -35,6 +36,9 @@ module BreezyPDF
 
     def body
       @body ||= JSON.parse(@http_response.body)
+    rescue JSON::ParserError => e
+      BreezyPDF.logger.fatal("[BreezyPDF] Server responded with invalid JSON: #{e}")
+      raise e
     end
   end
 end

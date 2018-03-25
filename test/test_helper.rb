@@ -9,6 +9,8 @@ require "rack/test"
 require "minitest/stub_const"
 require "minitest/autorun"
 
+BreezyPDF.logger.level = Logger::FATAL
+
 class BreezyTest < Minitest::Test
   def tested_class
     constantize(self.class.name.gsub(/Test$/, ""))

@@ -6,6 +6,7 @@ module BreezyPDF::HTML
     def initialize(base_url, html_fragment)
       @base_url      = base_url
       @html_fragment = html_fragment
+      @log_queue     = []
     end
 
     def public_fragment
@@ -23,6 +24,8 @@ module BreezyPDF::HTML
         end
       end
 
+      @log_queue.each { |msg| BreezyPDF.logger.info(msg) }
+
       thread_pool.shutdown
       thread_pool.wait_for_termination
     end
@@ -35,7 +38,10 @@ module BreezyPDF::HTML
       BreezyPDF.asset_path_matchers.each do |attr, matcher|
         attr_value = asset_element[attr.to_s]
 
-        replace_asset_element_attr(asset_element, attr.to_s) if attr_value && attr_value.match?(matcher)
+        next unless attr_value && attr_value.match?(matcher)
+
+        @log_queue << %([BreezyPDF] Replacing element #{asset_element.name}[#{attr}="#{asset_element[attr]}"])
+        replace_asset_element_attr(asset_element, attr.to_s)
       end
     end
 

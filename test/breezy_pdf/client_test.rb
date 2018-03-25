@@ -10,7 +10,7 @@ class BreezyPDF::ClientTest < BreezyTest
     request_mock.expect(:body=, true, [body.to_json])
 
     http_mock.expect(:tap, http_mock)
-    http_mock.expect(:request, true, [request_mock])
+    http_mock.expect(:request, OpenStruct.new(code: "201"), [request_mock])
 
     Net::HTTP.stub(:new, http_mock) do
       Net::HTTP::Post.stub(:new, request_mock) do
@@ -29,7 +29,7 @@ class BreezyPDF::ClientTest < BreezyTest
     request_mock.expect(:body=, true, [body.to_json])
 
     http_mock.expect(:tap, http_mock)
-    http_mock.expect(:request, true, [request_mock])
+    http_mock.expect(:request, OpenStruct.new(code: "201"), [request_mock])
 
     Net::HTTP.stub(:new, http_mock) do
       Net::HTTP::Put.stub(:new, request_mock) do

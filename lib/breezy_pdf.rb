@@ -47,9 +47,6 @@ module BreezyPDF
   mattr_accessor :upload_assets
   @@upload_assets = true
 
-  mattr_accessor :extract_metadata
-  @@extract_metadata = true
-
   mattr_accessor :asset_selectors
   @@asset_selectors = %w(img script link[rel="stylesheet"])
 
@@ -59,14 +56,21 @@ module BreezyPDF
     src:  %r{^\/\w+}
   }
 
+  mattr_accessor :extract_metadata
+  @@extract_metadata = true
+
   mattr_accessor :threads
-  @@threads = 4
+  @@threads = 1
 
   mattr_accessor :filter_elements
   @@filter_elements = false
 
-  mattr_accessor :filter_elements_selector
-  @@filtered_element_selectors = %(.breezy-pdf-remove)
+  mattr_accessor :filter_elements_selectors
+  @@filtered_element_selectors = %w[.breezy-pdf-remove]
+
+  mattr_accessor :logger
+  @@logger = Logger.new(STDOUT)
+  @@logger.level = Logger::FATAL
 
   def self.setup
     yield self

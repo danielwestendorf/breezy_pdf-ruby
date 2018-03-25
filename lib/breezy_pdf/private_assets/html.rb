@@ -34,10 +34,23 @@ module BreezyPDF::PrivateAssets
     end
 
     def modified_html_fragment
-      @modified_html_fragmentt ||= @html_fragment.tap do |fragment|
-        fragment = BreezyPDF::HTML::Publicize.new(@base_url, fragment).public_fragment if BreezyPDF.upload_assets
-        fragment = BreezyPDF::HTML::Strip.new(fragment).stripped_fragment if BreezyPDF.filter_elements
+      @modified_html_fragment ||= modify_html_fragment!
+    end
+
+    def modify_html_fragment!
+      if BreezyPDF.filter_elements
+        @html_fragment = BreezyPDF::HTML::Strip.new(
+          @html_fragment
+        ).stripped_fragment
       end
+
+      if BreezyPDF.upload_assets
+        @html_fragment = BreezyPDF::HTML::Publicize.new(
+          @base_url, @html_fragment
+        ).public_fragment
+      end
+
+      @html_fragment
     end
 
     def parsed_document

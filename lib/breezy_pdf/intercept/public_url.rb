@@ -4,6 +4,7 @@ module BreezyPDF::Intercept
   # :nodoc
   class PublicUrl < Base
     def call
+      BreezyPDF.logger.info("[BreezyPDF] Requesting render of #{public_url}")
       response = BreezyPDF::RenderRequest.new(public_url).submit
 
       [

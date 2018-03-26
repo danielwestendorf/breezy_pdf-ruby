@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.2
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 Metrics/LineLength:
@@ -16,3 +16,9 @@ Metrics/PerceivedComplexity:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
+Security/Open:
+  Enabled: false
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+Style/SafeNavigation:
+  Enabled:

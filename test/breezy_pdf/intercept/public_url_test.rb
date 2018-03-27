@@ -42,7 +42,7 @@ class BreezyPDF::Intercept::PublicUrlTest < BreezyTest
     mock_request.expect(:new, mock_submit, ["https://example.com/thing?a=b"])
 
     BreezyPDF.stub_const(:RenderRequest, mock_request) do
-      tested_class.new(nil, env.tap {|h| h["SERVER_PORT"] = 443 }).call
+      tested_class.new(nil, env.tap { |h| h["SERVER_PORT"] = 443 }).call
     end
 
     assert mock_request.verify

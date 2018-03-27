@@ -78,9 +78,9 @@ BreezyPDF.setup do |config|
   # Middleware Path Matchers
   #
   # An array for Regular Expressions which identify which URL's should be
-  # intercepted by the Middleware. Defaults to [/\.pdf$/], which will match
-  # all requests ending with a .pdf extension.
-  # config.middleware_path_matchers = [/\.pdf$/]
+  # intercepted by the Middleware. Defaults to [/\.pdf/], which will match
+  # all requests containing a .pdf extension.
+  # config.middleware_path_matchers = [/\.pdf/]
 
 
   # Treat URL's as Private

@@ -39,7 +39,7 @@ module BreezyPDF
   @@base_url = "https://breezypdf.com/api"
 
   mattr_accessor :middleware_path_matchers
-  @@middleware_path_matchers = [/\.pdf$/]
+  @@middleware_path_matchers = [/\.pdf/]
 
   mattr_accessor :treat_urls_as_private
   @@treat_urls_as_private = true

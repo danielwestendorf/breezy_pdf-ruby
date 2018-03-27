@@ -16,3 +16,9 @@ Metrics/PerceivedComplexity:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
+Security/Open:
+  Enabled: false
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+Style/SafeNavigation:
+  Enabled:

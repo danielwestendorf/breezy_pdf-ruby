@@ -48,8 +48,8 @@ module BreezyPDF::Intercept
 
     def doctored_env
       env.dup.tap do |hash|
-        hash["PATH_INFO"]   = path
         hash["HTTP_ACCEPT"] = "text/html"
+        hash["PATH_INFO"]   = path
       end
     end
 

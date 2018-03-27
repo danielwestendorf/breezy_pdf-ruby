@@ -3,8 +3,8 @@
 require "test_helper"
 
 class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
-  def app
-    proc { [200, {}, [fixture("metadata.html").read]] }
+  def app_response
+    [200, {}, [fixture("metadata.html").read]]
   end
 
   def metadata
@@ -30,15 +30,18 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
     mock_request = MiniTest::Mock.new
     mock_request.expect(:new, mock_submit, ["xyz", metadata])
 
-    [mock_public_url, mock_upload, mock_request, mock_submit]
+    mock_app = MiniTest::Mock.new
+    mock_app.expect(:call, app_response, [{ "PATH_INFO" => "/xyz", "HTTP_ACCEPT" => "text/html" }])
+
+    [mock_public_url, mock_upload, mock_request, mock_submit, mock_app]
   end
 
   def test_redirects_to_download_url
-    mock_public_url, mock_upload, mock_request, mock_submit = mocks
+    mock_public_url, mock_upload, mock_request, mock_submit, mock_app = mocks
 
     BreezyPDF::Uploads.stub_const(:Base, mock_upload) do
       BreezyPDF.stub_const(:RenderRequest, mock_request) do
-        status, headers, _body = tested_class.new(app, "PATH_INFO" => "xyz.pdf").call
+        status, headers, _body = tested_class.new(mock_app, "PATH_INFO" => "/xyz.pdf").call
 
         assert_equal 302, status
         assert_equal "abc", headers["Location"]
@@ -49,5 +52,6 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
     assert mock_upload.verify
     assert mock_request.verify
     assert mock_submit.verify
+    assert mock_app.verify
   end
 end

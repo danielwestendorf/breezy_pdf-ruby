@@ -48,7 +48,8 @@ module BreezyPDF::Intercept
 
     def doctored_env
       env.dup.tap do |hash|
-        hash["PATH_INFO"] = path
+        hash["PATH_INFO"]   = path
+        hash["HTTP_ACCEPT"] = "text/html"
       end
     end
 
@@ -61,7 +62,7 @@ module BreezyPDF::Intercept
     end
 
     def port
-      ":#{env['SERVER_PORT']}" unless [80, 443].include?(env['SERVER_PORT'].to_i)
+      ":#{env['SERVER_PORT']}" unless [80, 443].include?(env["SERVER_PORT"].to_i)
     end
   end
 end

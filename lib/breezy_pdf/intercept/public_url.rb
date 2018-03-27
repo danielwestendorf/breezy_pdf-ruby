@@ -17,7 +17,7 @@ module BreezyPDF::Intercept
     private
 
     def public_url
-      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}:#{env['SERVER_PORT']}" \
+      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{port}" \
       "#{path}?#{env['QUERY_STRING']}"
     end
 
@@ -29,6 +29,10 @@ module BreezyPDF::Intercept
       end
 
       path
+    end
+
+    def port
+      ":#{env['SERVER_PORT']}" unless [80, 443].include?(env['SERVER_PORT'].to_i)
     end
   end
 end

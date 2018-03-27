@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    breezy_pdf (0.0.6)
-      concurrent-ruby
-      nokogiri
+    breezy_pdf (0.0.7)
+      concurrent-ruby (~> 1)
+      nokogiri (~> 1)
 
 GEM
   remote: https://rubygems.org/
@@ -41,10 +41,10 @@ DEPENDENCIES
   breezy_pdf!
   bundler (~> 1.16)
   minitest (~> 5.0)
-  minitest-stub-const
-  rack-test
+  minitest-stub-const (~> 0.6)
+  rack-test (~> 0.8)
   rake (~> 10.0)
-  rubocop
+  rubocop (= 0.54)
 
 BUNDLED WITH
    1.16.0

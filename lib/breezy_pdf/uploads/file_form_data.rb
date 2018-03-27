@@ -50,7 +50,7 @@ module BreezyPDF::Uploads
 
     def closing_data
       [
-        "--#{boundary}\r\n",
+        "\r\n--#{boundary}\r\n",
         %(Content-Disposition: form-data; name="submit"\r\n\r\n),
         %(Upload) + "\r\n",
         "--#{boundary}--"

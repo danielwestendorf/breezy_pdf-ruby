@@ -63,7 +63,11 @@ module BreezyPDF::Intercept
     end
 
     def base_url
-      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}:#{env['SERVER_PORT']}"
+      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{port}"
+    end
+
+    def port
+      ":#{env['SERVER_PORT']}" unless [80, 443].include?(env['SERVER_PORT'].to_i)
     end
   end
 end

@@ -16,7 +16,7 @@ class BreezyPDF::HTML2PDFTest < BreezyTest
     mock_html_response.expect(:filename, "file.pdf")
     mock_html_response.expect(:content_type, "text/html")
     mock_html_response.expect(:file_path, "abc")
-    mock_html_response.expect(:metadata, {a: 1})
+    mock_html_response.expect(:metadata, a: 1)
 
     mock_html_asset = MiniTest::Mock.new
     mock_html_asset.expect(:new, mock_html_response, [asset_host, html])
@@ -28,7 +28,7 @@ class BreezyPDF::HTML2PDFTest < BreezyTest
     mock_render_result.expect(:submit, OpenStruct.new(download_url: "file.pdf"))
 
     mock_render_request = MiniTest::Mock.new
-    mock_render_request.expect(:new, mock_render_result, ["public.html", {a: 1}])
+    mock_render_request.expect(:new, mock_render_result, ["public.html", { a: 1 }])
 
     [mock_html_response, mock_html_asset, mock_upload, mock_render_result, mock_render_request]
   end

@@ -237,6 +237,27 @@ Here is a contrived example:
 </script>
 ```
 
+## Pragmatic access
+
+You may want to render a PDF out of the HTTP request cycle like in a background job or mailer. BreezyPDF supports rendering HTML as a PDF pragmatically. BreezyPDF::HTML2PDF expects two arguments, the `asset_host` for assets, and the html fragment. The `asset_host` should be the locally accessible host where external assets (js, css) can be downloaded from. In development, this may be `http://localhost:3000`, while in production it may be your configured `Rails.application.config.action_controller.asset_host`. If `BreezyPDF.upload_assets == false`, then this value has no impact.
+
+Here is an example of how you might do that:
+
+```
+def invoice_mailer(user, invoice)
+  asset_host = Rails.env.production? ? Rails.application.config.action_controller.asset_host : "http://localhost:3000"
+
+  html = ActionController::Renderer.render(template "invoices/show", assigns: { invoice: invoice }, locals: { current_user: user })
+  pdf = BreezyPDF::HTML2PDF.new(, html)
+
+  attachments["invoice-#{invoice.id}.pdf"] = pdf.to_file
+  @pdf_url = pdf.to_url
+end
+```
+
+This example uses [ActionController::Renderer](http://api.rubyonrails.org/classes/ActionController/Renderer.html) to render a controller template's html.
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

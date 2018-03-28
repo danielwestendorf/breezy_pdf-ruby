@@ -19,16 +19,17 @@ require "breezy_pdf/gzip"
 module BreezyPDF
   extend BreezyPDF::Util
 
+  autoload :Uploads,       "breezy_pdf/_uploads"
+  autoload :Intercept,     "breezy_pdf/_intercept"
+  autoload :Resources,     "breezy_pdf/_resources"
+  autoload :HTML,          "breezy_pdf/_html"
+
   autoload :VERSION,       "breezy_pdf/version"
   autoload :RenderRequest, "breezy_pdf/render_request"
   autoload :Client,        "breezy_pdf/client"
   autoload :Response,      "breezy_pdf/response"
   autoload :Middleware,    "breezy_pdf/middleware"
   autoload :Interceptor,   "breezy_pdf/interceptor"
-  autoload :Uploads,       "breezy_pdf/uploads"
-  autoload :Intercept,     "breezy_pdf/intercept"
-  autoload :PrivateAssets, "breezy_pdf/private_assets"
-  autoload :HTML,          "breezy_pdf/html"
   autoload :HTML2PDF,      "breezy_pdf/html_2_pdf"
 
   BreezyPDFError = Class.new(StandardError)

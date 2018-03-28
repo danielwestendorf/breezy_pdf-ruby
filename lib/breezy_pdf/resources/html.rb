@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module BreezyPDF::PrivateAssets
+module BreezyPDF::Resources
   # :nodoc
   class HTML
     def initialize(base_url, html_fragment)

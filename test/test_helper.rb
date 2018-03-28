@@ -9,7 +9,7 @@ require "rack/test"
 require "minitest/stub_const"
 require "minitest/autorun"
 
-BreezyPDF.logger.level = Logger::FATAL
+BreezyPDF.logger = Logger.new("/dev/null")
 
 class BreezyTest < Minitest::Test
   def tested_class

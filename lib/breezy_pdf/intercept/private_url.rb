@@ -4,18 +4,24 @@ module BreezyPDF::Intercept
   # :nodoc
   class PrivateUrl < Base
     def call
+      raise BreezyPDF::Intercept::UnRenderable unless (200..299).cover?(status)
+
       BreezyPDF.logger.info(
         "[BreezyPDF] Requesting render of #{public_url} with metadata: #{html_private_asset.metadata}"
       )
 
-      response = BreezyPDF::RenderRequest.new(public_url, html_private_asset.metadata).submit
+      render_request = BreezyPDF::RenderRequest.new(public_url, html_private_asset.metadata).submit
 
-      BreezyPDF.logger.info("[BreezyPDF] Redirect to pdf at #{response.download_url}")
+      BreezyPDF.logger.info("[BreezyPDF] Redirect to pdf at #{render_request.download_url}")
       [
         302,
-        { "Location" => response.download_url, "Content-Type" => "text/html", "Content-Length" => "0" },
+        { "Location" => render_request.download_url, "Content-Type" => "text/html", "Content-Length" => "0" },
         []
       ]
+    rescue BreezyPDF::Intercept::UnRenderable
+      BreezyPDF.logger.fatal("[BreezyPDF] Unable to render HTML, server responded with HTTP Status #{status}")
+
+      return response
     end
 
     private

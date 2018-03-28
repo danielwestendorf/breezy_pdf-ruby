@@ -29,6 +29,7 @@ module BreezyPDF
   autoload :Intercept,     "breezy_pdf/intercept"
   autoload :PrivateAssets, "breezy_pdf/private_assets"
   autoload :HTML,          "breezy_pdf/html"
+  autoload :HTML2PDF,      "breezy_pdf/html_2_pdf"
 
   BreezyPDFError = Class.new(StandardError)
 

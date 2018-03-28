@@ -38,7 +38,7 @@ module BreezyPDF
     end
 
     def html_private_asset
-      @html_private_asset ||= BreezyPDF::PrivateAssets::HTML.new(@asset_host, @html_string)
+      @html_private_asset ||= BreezyPDF::Resources::HTML.new(@asset_host, @html_string)
     end
 
     def public_url

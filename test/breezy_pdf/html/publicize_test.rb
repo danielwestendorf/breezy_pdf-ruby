@@ -56,7 +56,7 @@ class BreezyPDF::HTML::PublicizeTest < BreezyTest
       )
     end
 
-    BreezyPDF::PrivateAssets.stub_const(:Asset, @asset_mock) do
+    BreezyPDF::Resources.stub_const(:Asset, @asset_mock) do
       BreezyPDF::Uploads.stub_const(:Base, @upload_mock) do
         @public_fragment = tested_class.new(base_url, fragment).public_fragment
         @result_doc = Nokogiri::HTML(@public_fragment)

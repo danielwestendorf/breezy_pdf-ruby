@@ -250,7 +250,7 @@ def invoice_mailer(user, invoice)
   html = ActionController::Renderer.render(template "invoices/show", assigns: { invoice: invoice }, locals: { current_user: user })
   pdf = BreezyPDF::HTML2PDF.new(, html)
 
-  attachments["invoice-#{invoice.id}.pdf"] = pdf.to_file
+  attachments["invoice-#{invoice.id}.pdf"] = pdf.to_file.read
   @pdf_url = pdf.to_url
 end
 ```

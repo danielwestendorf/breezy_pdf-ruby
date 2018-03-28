@@ -47,7 +47,7 @@ module BreezyPDF::HTML
 
     def replace_asset_element_attr(asset_element, attr)
       thread_pool.post do
-        asset = BreezyPDF::PrivateAssets::Asset.new(@base_url, asset_element[attr])
+        asset = BreezyPDF::Resources::Asset.new(@base_url, asset_element[attr])
 
         asset_element[attr] = BreezyPDF::Uploads::Base.new(
           asset.filename, asset.content_type, asset.file_path

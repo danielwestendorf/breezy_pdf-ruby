@@ -21,7 +21,7 @@ module BreezyPDF::Intercept
     rescue BreezyPDF::Intercept::UnRenderable
       BreezyPDF.logger.fatal("[BreezyPDF] Unable to render HTML, server responded with HTTP Status #{status}")
 
-      return response
+      response
     end
 
     private
@@ -33,7 +33,7 @@ module BreezyPDF::Intercept
     end
 
     def html_private_asset
-      @html_private_asset ||= BreezyPDF::PrivateAssets::HTML.new(base_url, body)
+      @html_private_asset ||= BreezyPDF::Resources::HTML.new(base_url, body)
     end
 
     def status

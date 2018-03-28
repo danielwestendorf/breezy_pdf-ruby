@@ -55,9 +55,13 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
     assert mock_app.verify
   end
 
-  def test_non_2XX_app_response
+  def test_non_successful_app_response
     mock_app = MiniTest::Mock.new
-    mock_app.expect(:call, [301, { "Location" => "/xyz" }, [""]], [{ "PATH_INFO" => "/xyz", "HTTP_ACCEPT" => "text/html" }])
+    mock_app.expect(
+      :call,
+      [301, { "Location" => "/xyz" }, [""]],
+      [{ "PATH_INFO" => "/xyz", "HTTP_ACCEPT" => "text/html" }]
+    )
 
     status, headers, _body = tested_class.new(mock_app, "PATH_INFO" => "/xyz.pdf").call
 

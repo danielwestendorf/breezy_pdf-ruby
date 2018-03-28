@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class BreezyPDF::PrivateAssets::AssetTest < BreezyTest
+class BreezyPDF::Resources::AssetTest < BreezyTest
   def setup
     @file_mock = MiniTest::Mock.new
     @file_mock.expect(:path, "abc")

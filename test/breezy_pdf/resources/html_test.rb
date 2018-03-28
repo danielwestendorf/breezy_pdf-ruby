@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class BreezyPDF::PrivateAssets::HTMLTest < BreezyTest
+class BreezyPDF::Resources::HTMLTest < BreezyTest
   def teardown
     BreezyPDF.upload_assets = true
     BreezyPDF.extract_metadata = true

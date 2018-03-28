@@ -41,7 +41,7 @@ class BreezyPDF::HTML2PDFTest < BreezyTest
 
     BreezyPDF.stub_const(:RenderRequest, mock_render_request) do
       BreezyPDF::Uploads.stub_const(:Base, mock_upload) do
-        BreezyPDF::PrivateAssets.stub_const(:HTML, mock_html_asset) do
+        BreezyPDF::Resources.stub_const(:HTML, mock_html_asset) do
           instance = tested_class.new(asset_host, html)
 
           instance.stub(:open, file_mock) do
@@ -65,7 +65,7 @@ class BreezyPDF::HTML2PDFTest < BreezyTest
 
     BreezyPDF.stub_const(:RenderRequest, mock_render_request) do
       BreezyPDF::Uploads.stub_const(:Base, mock_upload) do
-        BreezyPDF::PrivateAssets.stub_const(:HTML, mock_html_asset) do
+        BreezyPDF::Resources.stub_const(:HTML, mock_html_asset) do
           instance = tested_class.new(asset_host, html)
 
           assert_equal "file.pdf", instance.to_url

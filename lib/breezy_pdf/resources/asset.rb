@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module BreezyPDF::PrivateAssets
+module BreezyPDF::Resources
   # :nodoc
   class Asset
     def initialize(base_url, asset_path_or_url)

@@ -163,7 +163,7 @@ BreezyPDF.setup do |config|
   #
   # Only applicable when `config.treat_urls_as_private == true`
   #
-  # config.fitler_elements = false
+  # config.filter_elements = false
 
 
   # Filter Elements Selectors
@@ -173,7 +173,7 @@ BreezyPDF.setup do |config|
   #
   # Only applicable when `config.treat_urls_as_private == true`
   #
-  # config.filtered_element_selectors = %w[.breezy-pdf-remove]
+  # config.filter_elements_selectors = %w[.breezy-pdf-remove]
 
   # Logger
   #

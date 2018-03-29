@@ -25,7 +25,8 @@ module BreezyPDF::Resources
     def file
       @file ||= if io_object.is_a?(StringIO)
                   Tempfile.new.tap do |f|
-                    f.write io_object.to_s
+                    f.write io_object.tap(&:rewind).read
+                    f.flush
                   end
                 else
                   io_object

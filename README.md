@@ -8,6 +8,8 @@ No binaries to install. No reinventing the wheel to match HTML layouts. Just sim
 
 [Sign Up](https://BreezyPDF.com/) for an account to get started.
 
+[View the Demo](https://ruby.demo.breezypdf.com) and the [Demo's Source Code](https://github.com/danielwestendorf/breezy_pdf-ruby-demo)
+
 ## Installation
 
 Add this line to your application's Gemfile:

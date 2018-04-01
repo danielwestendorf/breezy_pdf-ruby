@@ -47,11 +47,13 @@ module BreezyPDF::HTML
 
     def replace_asset_element_attr(asset_element, attr)
       thread_pool.post do
-        asset = BreezyPDF::Resources::Asset.new(@base_url, asset_element[attr])
+        asset_element[attr] = BreezyPDF.asset_cache.fetch(asset_element[attr], expires_in: 601_200) do
+          asset = BreezyPDF::Resources::Asset.new(@base_url, asset_element[attr])
 
-        asset_element[attr] = BreezyPDF::Uploads::Base.new(
-          asset.filename, asset.content_type, asset.file_path
-        ).public_url
+          BreezyPDF::Uploads::Base.new(
+            asset.filename, asset.content_type, asset.file_path
+          ).public_url
+        end
       end
     end
 

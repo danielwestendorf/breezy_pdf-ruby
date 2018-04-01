@@ -8,6 +8,7 @@ require "securerandom"
 require "zlib"
 require "stringio"
 require "open-uri"
+require "monitor"
 
 require "nokogiri"
 require "concurrent"

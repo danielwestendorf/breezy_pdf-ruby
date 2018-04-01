@@ -3,45 +3,56 @@
 require "test_helper"
 
 class BreezyPDF::Cache::InMemoryTest < BreezyTest
-  def set_test
-    assert tested_class.new.set("a", "b")
+  def write_test
+    assert tested_class.new.write("a", "b")
   end
 
-  def get_test
+  def read_test
     instance = tested_class.new
-    instance.set("a", "b")
+    instance.write("a", "b")
 
-    assert_equal "b", instance.get("a")
+    assert_equal "b", instance.read("a")
   end
 
-  def test_fetch_value_already_set
+  def test_fetch_value_already_write
     instance = tested_class.new
-    instance.set("a", "b")
+    instance.write("a", "b")
 
     assert_equal "b", instance.fetch("a")
   end
 
-  def test_fetch_value_not_set
+  def test_fetch_value_not_write
     instance = tested_class.new
 
-    assert_nil instance.get("a")
+    assert_nil instance.read("a")
 
     returned_value = instance.fetch("a") do
       "b"
     end
 
     assert_equal "b", returned_value
-    assert_equal "b", instance.get("a")
+    assert_equal "b", instance.read("a")
   end
 
   def test_remove_last_accessed!
     instance = tested_class.new
 
     1001.times do |i|
-      instance.set(i, i)
+      instance.write(i, i)
     end
 
-    assert_nil instance.get(0)
-    assert_equal 1, instance.get(1)
+    assert_nil instance.read(0)
+    assert_equal 1, instance.read(1)
+  end
+
+  def test_key_expiration
+    instance = tested_class.new
+    instance.write("a", "b", expires_in: 60)
+
+    Time.stub(:now, Time.now + 60.1) do
+      assert_nil instance.read("a")
+    end
+
+    assert_nil instance.read("a") # it should have been deleted from the map
   end
 end

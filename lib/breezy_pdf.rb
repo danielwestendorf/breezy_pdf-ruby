@@ -8,6 +8,7 @@ require "securerandom"
 require "zlib"
 require "stringio"
 require "open-uri"
+require "monitor"
 
 require "nokogiri"
 require "concurrent"
@@ -23,6 +24,7 @@ module BreezyPDF
   autoload :Intercept,     "breezy_pdf/_intercept"
   autoload :Resources,     "breezy_pdf/_resources"
   autoload :HTML,          "breezy_pdf/_html"
+  autoload :Cache,         "breezy_pdf/_cache"
 
   autoload :VERSION,       "breezy_pdf/version"
   autoload :RenderRequest, "breezy_pdf/render_request"
@@ -57,6 +59,9 @@ module BreezyPDF
     href: %r{^\/\w+},
     src:  %r{^\/\w+}
   }
+
+  mattr_accessor :asset_cache
+  @@asset_cache = Cache::Null.new
 
   mattr_accessor :extract_metadata
   @@extract_metadata = true

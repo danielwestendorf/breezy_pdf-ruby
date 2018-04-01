@@ -61,7 +61,7 @@ module BreezyPDF
   }
 
   mattr_accessor :asset_cache
-  @@asset_cache = false
+  @@asset_cache = Cache::Null.new
 
   mattr_accessor :extract_metadata
   @@extract_metadata = true

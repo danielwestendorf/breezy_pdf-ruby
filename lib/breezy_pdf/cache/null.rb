@@ -3,14 +3,14 @@
 module BreezyPDF::Cache
   # Null cache store for assets. Doesn't actually store anything.
   class Null
-    def write(key, value, opts = {})
+    def write(_key, _value, _opts = {})
       true
     end
 
     def read(key); end
 
-    def fetch(key, opts = {}, &blk)
-      blk.call if block_given?
+    def fetch(_key, _opts = {})
+      yield if block_given?
     end
   end
 end

@@ -49,11 +49,16 @@ module BreezyPDF::Uploads
     end
 
     def resource
-      BreezyPDF.logger.info(%([BreezyPDF] Initiating presign of private asset upload #{@filename}))
-      @resource ||= client.post("/uploads", filename: @filename, size: file.size, content_type: @content_type)
+      @resource ||= client.post("/uploads", resource_options).tap do
+        BreezyPDF.logger.info(%([BreezyPDF] Initiating presign of private asset upload #{@filename}))
+      end
     rescue Net::HTTP => error
       BreezyPDF.logger.fatal(%([BreezyPDF] Unable to presign private asset upload for #{@filename}))
       raise PresignError, error.message
+    end
+
+    def resource_options
+      @resource_options ||= { filename: @filename, size: file.size, content_type: @content_type }
     end
 
     def upload_uri

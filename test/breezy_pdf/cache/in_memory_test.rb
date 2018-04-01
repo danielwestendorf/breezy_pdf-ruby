@@ -21,7 +21,7 @@ class BreezyPDF::Cache::InMemoryTest < BreezyTest
     assert_equal "b", instance.fetch("a")
   end
 
-  def test_fetch_value_not_write
+  def test_fetch_value_not_writen
     instance = tested_class.new
 
     assert_nil instance.read("a")

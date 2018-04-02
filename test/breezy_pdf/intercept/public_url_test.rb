@@ -15,14 +15,24 @@ class BreezyPDF::Intercept::PublicUrlTest < BreezyTest
     }
   end
 
-  def test_redirects_to_download_url
+  def mocks
     response = OpenStruct.new(code: "201", body: { download_url: "abc" }.to_json)
 
     mock_submit = MiniTest::Mock.new
     mock_submit.expect(:submit, response)
 
     mock_request = MiniTest::Mock.new
-    mock_request.expect(:new, mock_submit, ["https://example.com:3000/thing?a=b"])
+    [mock_request, mock_submit]
+  end
+
+  def test_redirects_to_download_url
+    mock_request, mock_submit = mocks
+
+    metadata = {
+      "requested_url" => "https://example.com:3000/thing.pdf?a=b", "rendered_url" => "https://example.com:3000/thing?a=b"
+    }
+
+    mock_request.expect(:new, mock_submit, ["https://example.com:3000/thing?a=b", metadata])
 
     BreezyPDF.stub_const(:RenderRequest, mock_request) do
       tested_class.new(nil, env).call
@@ -33,13 +43,13 @@ class BreezyPDF::Intercept::PublicUrlTest < BreezyTest
   end
 
   def test_redirects_to_download_url_with_normal_port
-    response = OpenStruct.new(code: "201", body: { download_url: "abc" }.to_json)
+    mock_request, mock_submit = mocks
 
-    mock_submit = MiniTest::Mock.new
-    mock_submit.expect(:submit, response)
+    metadata = {
+      "requested_url" => "https://example.com/thing.pdf?a=b", "rendered_url" => "https://example.com/thing?a=b"
+    }
 
-    mock_request = MiniTest::Mock.new
-    mock_request.expect(:new, mock_submit, ["https://example.com/thing?a=b"])
+    mock_request.expect(:new, mock_submit, ["https://example.com/thing?a=b", metadata])
 
     BreezyPDF.stub_const(:RenderRequest, mock_request) do
       tested_class.new(nil, env.tap { |h| h["SERVER_PORT"] = 443 }).call

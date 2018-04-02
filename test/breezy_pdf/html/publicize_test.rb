@@ -44,7 +44,7 @@ class BreezyPDF::HTML::PublicizeTest < BreezyTest
     @asset_mock  = MiniTest::Mock.new
     @upload_mock = MiniTest::Mock.new
 
-    mock_expectations.each do |expectation|
+    mock_expectations.each.with_index do |expectation, i|
       @asset_mock.expect(:new, *expectation)
 
       result     = expectation[0]
@@ -52,14 +52,18 @@ class BreezyPDF::HTML::PublicizeTest < BreezyTest
 
       @upload_mock.expect(
         :new,
-        OpenStruct.new(public_url: public_url), [result.filename, result.content_type, result.file_path]
+        OpenStruct.new(public_url: public_url, id: i.to_s),
+        [result.filename, result.content_type, result.file_path]
       )
     end
 
     BreezyPDF::Resources.stub_const(:Asset, @asset_mock) do
       BreezyPDF::Uploads.stub_const(:Base, @upload_mock) do
-        @public_fragment = tested_class.new(base_url, fragment).public_fragment
-        @result_doc = Nokogiri::HTML(@public_fragment)
+        instance         = tested_class.new(base_url, fragment)
+
+        @public_fragment = instance.public_fragment
+        @upload_ids      = instance.upload_ids
+        @result_doc      = Nokogiri::HTML(@public_fragment)
       end
     end
   end
@@ -82,5 +86,9 @@ class BreezyPDF::HTML::PublicizeTest < BreezyTest
   def test_img_tags_are_replaced
     assert_equal 2, @result_doc.css(%(img)).length
     assert_equal 1, @result_doc.css(%(img[src^="https://breezypdf.com"])).length
+  end
+
+  def test_upload_ids
+    assert_equal %w[0 1 2], @upload_ids
   end
 end

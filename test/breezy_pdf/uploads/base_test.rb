@@ -13,9 +13,7 @@ class BreezyPDF::Uploads::BaseTest < BreezyTest
     }
   end
 
-  def test_public_url
-    instance = tested_class.new("image.png", "image/png", fixture("file.png").path)
-
+  def mocks
     client_mock = MiniTest::Mock.new
     # Presign HTTP Request
     client_mock.expect(
@@ -25,18 +23,41 @@ class BreezyPDF::Uploads::BaseTest < BreezyTest
     # Complete HTTP Request
     client_mock.expect(:put, true, ["/uploads/#{resource['id']}", {}])
 
-    # Upload HTTP Request
-    request_mock = MiniTest::Mock.new
-    request_mock.expect(:request, OpenStruct.new(code: "204"))
+    upload_http_mock = MiniTest::Mock.new
+    upload_http_mock.expect(:request, OpenStruct.new(code: "204"), [Net::HTTP::Post])
 
-    upload_mock = MiniTest::Mock.new
-    upload_mock.expect(:new, request_mock, ["example.com", 443])
-    upload_mock.expect(:use_ssl=, true, [true])
+    [client_mock, upload_http_mock]
+  end
 
-    instance.stub(:upload!, upload_mock) do
+  def test_public_url
+    instance = tested_class.new("image.png", "image/png", fixture("file.png").path)
+
+    client_mock, upload_http_mock = mocks
+
+    instance.stub(:upload_http, upload_http_mock) do
       instance.stub(:client, client_mock) do
         assert_equal resource["presigned_url"], instance.public_url
       end
     end
+
+    assert client_mock.verify
+    assert upload_http_mock.verify
+  end
+
+  def test_id
+    client_mock = MiniTest::Mock.new
+    # Presign HTTP Request
+    client_mock.expect(
+      :post, OpenStruct.new(resource),
+      ["/uploads", filename: "image.png", size: fixture("file.png").size, content_type: "image/png"]
+    )
+
+    instance = tested_class.new("image.png", "image/png", fixture("file.png").path)
+
+    instance.stub(:client, client_mock) do
+      assert_equal resource["id"], instance.id
+    end
+
+    assert client_mock.verify
   end
 end

@@ -7,19 +7,29 @@ module BreezyPDF::Uploads
       @filename     = filename
       @content_type = content_type
       @file_path    = file_path
+
+      @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
     def public_url
+      @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       BreezyPDF.logger.info(%([BreezyPDF] Starting private asset upload for #{@filename}))
       upload!
       complete_upload!
 
-      BreezyPDF.logger.info(%([BreezyPDF] Private asset upload for #{@filename} completed))
+      @end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      BreezyPDF.logger.info(
+        %([BreezyPDF] Private asset upload for #{@filename} completed in #{timing} seconds)
+      )
       resource.presigned_url
     end
 
     def id
       resource.id
+    end
+
+    def timing
+      @timing ||= Process.clock_gettime(Process::CLOCK_MONOTONIC) - @start_time
     end
 
     private

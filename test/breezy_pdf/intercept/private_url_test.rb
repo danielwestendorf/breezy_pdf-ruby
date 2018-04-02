@@ -9,6 +9,9 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
 
   def metadata
     {
+      "requested_url" => "://:/xyz.pdf",
+      "rendered_url" => "://:/xyz",
+      "upload_ids" => %w[1],
       "head" => "2",
       "alt"  => "3",
       "body" => "4"
@@ -16,11 +19,13 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
   end
 
   def mocks
-    mock_public_url = MiniTest::Mock.new
-    mock_public_url.expect(:public_url, "xyz")
+    mock_upload_response = MiniTest::Mock.new
+    mock_upload_response.expect(:public_url, "xyz")
+    mock_upload_response.expect(:id, "1")
+    mock_upload_response.expect(:id, "1")
 
     mock_upload = MiniTest::Mock.new
-    mock_upload.expect(:new, mock_public_url, [/\.html$/, "text/html", String])
+    mock_upload.expect(:new, mock_upload_response, [/\.html$/, "text/html", String])
 
     response = OpenStruct.new(download_url: "abc")
 
@@ -33,11 +38,11 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
     mock_app = MiniTest::Mock.new
     mock_app.expect(:call, app_response, [{ "PATH_INFO" => "/xyz", "HTTP_ACCEPT" => "text/html" }])
 
-    [mock_public_url, mock_upload, mock_request, mock_submit, mock_app]
+    [mock_upload_response, mock_upload, mock_request, mock_submit, mock_app]
   end
 
   def test_redirects_to_download_url
-    mock_public_url, mock_upload, mock_request, mock_submit, mock_app = mocks
+    mock_upload_response, mock_upload, mock_request, mock_submit, mock_app = mocks
 
     BreezyPDF::Uploads.stub_const(:Base, mock_upload) do
       BreezyPDF.stub_const(:RenderRequest, mock_request) do
@@ -48,7 +53,7 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
       end
     end
 
-    assert mock_public_url.verify
+    assert mock_upload_response.verify
     assert mock_upload.verify
     assert mock_request.verify
     assert mock_submit.verify

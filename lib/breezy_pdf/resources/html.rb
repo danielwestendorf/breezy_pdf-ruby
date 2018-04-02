@@ -6,6 +6,7 @@ module BreezyPDF::Resources
     def initialize(base_url, html_fragment)
       @base_url      = base_url
       @html_fragment = html_fragment
+      @upload_ids    = []
     end
 
     def content_type
@@ -22,6 +23,12 @@ module BreezyPDF::Resources
 
     def metadata
       @metadata ||= BreezyPDF.extract_metadata ? Hash[*meta_tags] : {}
+    end
+
+    def upload_ids
+      modified_html_fragment
+
+      @upload_ids
     end
 
     private
@@ -45,9 +52,11 @@ module BreezyPDF::Resources
       end
 
       if BreezyPDF.upload_assets
-        @html_fragment = BreezyPDF::HTML::Publicize.new(
+        publiciser = BreezyPDF::HTML::Publicize.new(
           @base_url, @html_fragment
-        ).public_fragment
+        )
+        @upload_ids    = publiciser.upload_ids
+        @html_fragment = publiciser.public_fragment
       end
 
       @html_fragment

@@ -18,6 +18,10 @@ module BreezyPDF::Uploads
       resource.presigned_url
     end
 
+    def id
+      resource.id
+    end
+
     private
 
     def client

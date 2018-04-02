@@ -7,12 +7,19 @@ module BreezyPDF::HTML
       @base_url      = base_url
       @html_fragment = html_fragment
       @log_queue     = []
+      @upload_ids    = []
     end
 
     def public_fragment
       @public_fragment ||= parsed_document.tap do
         publicize!
       end.to_html
+    end
+
+    def upload_ids
+      public_fragment
+
+      @upload_ids
     end
 
     private
@@ -50,9 +57,12 @@ module BreezyPDF::HTML
         asset_element[attr] = BreezyPDF.asset_cache.fetch(asset_element[attr], expires_in: 601_200) do
           asset = BreezyPDF::Resources::Asset.new(@base_url, asset_element[attr])
 
-          BreezyPDF::Uploads::Base.new(
+          upload = BreezyPDF::Uploads::Base.new(
             asset.filename, asset.content_type, asset.file_path
-          ).public_url
+          )
+          @upload_ids.push(upload.id)
+
+          upload.public_url
         end
       end
     end

@@ -5,12 +5,18 @@ module BreezyPDF::HTML
   class Strip
     def initialize(html_fragment)
       @html_fragment = html_fragment
+      @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
     def stripped_fragment
       @stripped_fragment ||= parsed_document.tap do
         strip!
+        BreezyPDF.logger.info("[BreezyPDF] Stripped out elements in `#{timing} seconds`")
       end.to_html
+    end
+
+    def timing
+      @timing ||= Process.clock_gettime(Process::CLOCK_MONOTONIC) - @start_time
     end
 
     private

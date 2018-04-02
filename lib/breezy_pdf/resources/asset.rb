@@ -34,7 +34,17 @@ module BreezyPDF::Resources
     end
 
     def io_object
-      @io_object ||= open(asset_url)
+      @io_object ||= download_asset_from_url
+    end
+
+    def download_asset_from_url
+      start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      asset_object = open(asset_url)
+      timing = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
+
+      BreezyPDF.logger.info("[BreezyPDF] Downloading #{filename} took `#{timing} seconds`")
+
+      asset_object
     end
 
     def asset_url

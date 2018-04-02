@@ -8,11 +8,13 @@ module BreezyPDF::HTML
       @html_fragment = html_fragment
       @log_queue     = []
       @upload_ids    = []
+      @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
     def public_fragment
       @public_fragment ||= parsed_document.tap do
         publicize!
+        BreezyPDF.logger.info("[BreezyPDF] Replaced assets in `#{timing} seconds`")
       end.to_html
     end
 
@@ -20,6 +22,10 @@ module BreezyPDF::HTML
       public_fragment
 
       @upload_ids
+    end
+
+    def timing
+      @timing ||= Process.clock_gettime(Process::CLOCK_MONOTONIC) - @start_time
     end
 
     private

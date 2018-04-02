@@ -8,9 +8,14 @@ module BreezyPDF::Intercept
     def initialize(app, env)
       @app = app
       @env = env
+      @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
     private
+
+    def timing
+      @timing ||= Process.clock_gettime(Process::CLOCK_MONOTONIC) - @start_time
+    end
 
     def metadata
       {

@@ -12,6 +12,7 @@ module BreezyPDF::Intercept
 
       render_request = BreezyPDF::RenderRequest.new(public_url, metadata).submit
 
+      BreezyPDF.logger.info("[BreezyPDF] Completed request intercept in #{timing} seconds")
       BreezyPDF.logger.info("[BreezyPDF] Redirect to pdf at #{render_request.download_url}")
       [
         302,

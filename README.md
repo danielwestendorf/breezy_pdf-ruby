@@ -140,7 +140,7 @@ BreezyPDF.setup do |config|
   #
   # Cache asset URL's to prevent re-uploading of assets. Assets are cached based on asset_path,
   # so fingerprinting or digests are recommended before turning on. The default cache store is
-  # a null store, which won't actuall store anything. An in-memory store is also provided, but
+  # a null store, which won't actually store anything. An in-memory store is also provided, but
   # this store won't share values across threads. Alternatively, use an external store which
   # implements a `fetch(key, opts={}, &blk) API, such as the Rails.cache.
   #

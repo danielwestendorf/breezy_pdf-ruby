@@ -161,7 +161,7 @@ BreezyPDF.setup do |config|
   # Extract Metadata
   #
   # BreezyPDF supports specifying how a page should be rendered through meta tags within
-  # the HTML to be rendered. Contact support@breezypdf.com for more details. Default is
+  # the HTML to be rendered. Visit https://docs.breezypdf.com for metadata information. Default is
   # true.
   #
   # Only applicable when `treat_urls_as_private == true`
@@ -207,6 +207,16 @@ BreezyPDF.setup do |config|
   # Configure the logger, if you're into that sort of thing.
   #
   # config.logger = Logger.new(STDOUT).tap { |logger| logger.level = Logger::FATAL }
+
+  # Default Meta Data
+  #
+  # Define default meta data which will be included with every render. Extracted metadata
+  # will override these values. Visit https://docs.breezypdf.com for metadata information.
+  #
+  # config.default_metadata = {
+  #   width:  23.4,
+  #   height: 33.1
+  # }
 end
 ```
 
@@ -219,48 +229,28 @@ If you want to show a loading animation on the current page, you can simply load
 Here is a contrived example:
 
 ```html
-<a href="/this/path.pdf" class="breezy-pdf-download">Download as PDF</a>
+<a href="/this/path.pdf" class="pdf-link">Download as PDF</a>
 
 <script type="text/javascript">
-  var downloadLinkEls = document.querySelectorAll('.breezy-pdf-download');
-  var loadingEl = document.createElement('div');
-  loadingEl.innerHTML = "<h1>Loading!</h1><p>Loading icon here, maybe?</p><p id='breezy-progress'></p>";
-  loadingEl.style = "position: absolute; width: 100%; height: 100%; text-align: center; background: #fff; top: 0; left: 0; z-index: 10000; display: none;"
+  $('.pdf-link').on('click', function(clickEv) {
+    var startTime     = new Date();
+    var targetEl      = $(clickEv.target);
+    var modalEl       = $('#pdf-loading'); // An existing bootstrap modal in this example
+    var ajaxRequest   = new XMLHttpRequest();
 
-  document.body.appendChild(loadingEl);
-  var progressEl = document.getElementById('breezy-progress');
+    clickEv.preventDefault();
 
-  for (var i = downloadLinkEls.length - 1; i >= 0; i--) {
-    var linkEl = downloadLinkEls[i];
-    var pdfUrl = linkEl.getAttribute('href');
+    ajaxRequest.addEventListener('load', function(ev) {
+      modalEl.modal('hide');
 
-    // Listen for a click on the link, then start handling the change of state
-    linkEl.addEventListener('click', function(ev) {
-      loadingEl.style.display = "block"; // Display ad-hoc loading element
-      ev.preventDefault();
-
-      var i = 1;
-      var interval = setInterval(function() {
-        progressEl.innerText = i / 10.0 + ' waiting seconds so far...';
-        i++;
-      }, 100);
-
-      var ajaxRequest = new XMLHttpRequest();
-
-      ajaxRequest.addEventListener('load', function(ev) {
-        clearInterval(interval);
-        console.log("Done waiting. We'd close modals or remove loading animations here before setting the location.")
-        loadingEl.style.display = "none";
-
-        // Redirect the eventual URL of the PDF
-        // If the browser downloads the file, the current page's HTML will still be shown
-        window.location = ev.currentTarget.responseURL;
-      })
-
-      ajaxRequest.open('GET', pdfUrl);
-      ajaxRequest.send();
+      window.location = ev.currentTarget.responseURL;
     })
-  }
+
+    modalEl.modal('show');
+
+    ajaxRequest.open('GET', targetEl.attr('href'));
+    ajaxRequest.send();
+  })
 </script>
 ```
 
@@ -274,8 +264,10 @@ Here is an example of how you might do that:
 def invoice_mailer(user, invoice)
   asset_host = Rails.env.production? ? Rails.application.config.action_controller.asset_host : "http://localhost:3000"
 
+  metadata = { width: 8.5, width: 11 }
+
   html = ActionController::Renderer.render(template "invoices/show", assigns: { invoice: invoice }, locals: { current_user: user })
-  pdf = BreezyPDF::HTML2PDF.new(, html)
+  pdf = BreezyPDF::HTML2PDF.new(asset_host, html, metadata)
 
   attachments["invoice-#{invoice.id}.pdf"] = pdf.to_file.read
   @pdf_url = pdf.to_url

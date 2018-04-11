@@ -8,14 +8,14 @@ class BreezyPDF::Intercept::PrivateUrlTest < BreezyTest
   end
 
   def metadata
-    {
+    BreezyPDF.default_metadata.merge(
       "requested_url" => "://:/xyz.pdf",
       "rendered_url" => "://:/xyz",
       "upload_ids" => %w[1],
       "head" => "2",
       "alt"  => "3",
       "body" => "4"
-    }
+    )
   end
 
   def mocks

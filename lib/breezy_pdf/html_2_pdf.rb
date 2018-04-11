@@ -4,9 +4,10 @@ module BreezyPDF
   # Transform an HTML slug to a PDF
   # Access it's URL or download it locally and access it as a Tempfile
   class HTML2PDF
-    def initialize(asset_host, html_string)
+    def initialize(asset_host, html_string, metadata = {})
       @asset_host  = asset_host
       @html_string = html_string
+      @metadata    = metadata
     end
 
     def to_url
@@ -30,7 +31,11 @@ module BreezyPDF
     end
 
     def url
-      @url ||= BreezyPDF::RenderRequest.new(public_url, html_private_asset.metadata).submit.download_url
+      @url ||= BreezyPDF::RenderRequest.new(public_url, combined_metadata).submit.download_url
+    end
+
+    def combined_metadata
+      @combined_metadata ||= BreezyPDF.default_metadata.merge(@metadata).merge(html_private_asset.metadata)
     end
 
     def io_object

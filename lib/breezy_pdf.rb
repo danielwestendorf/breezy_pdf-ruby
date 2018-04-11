@@ -75,11 +75,32 @@ module BreezyPDF
   mattr_accessor :filter_elements_selectors
   @@filtered_element_selectors = %w[.breezy-pdf-remove]
 
+  mattr_writer :default_metadata
+  @@default_metadata = {
+    width:             8.5,
+    height:            11,
+    cssPageSize:       false,
+    marginTop:         0.04,
+    marginRight:       0.04,
+    marginBottom:      0.04,
+    marginLeft:        0.04,
+    landscape:         false,
+    scale:             1,
+    displayBackground: false,
+    headerTemplate:    "",
+    footerTemplate:    ""
+  }
+
   mattr_accessor :logger
   @@logger = Logger.new(STDOUT)
   @@logger.level = Logger::FATAL
 
   def self.setup
     yield self
+  end
+
+  # Support proper merging of hash rocket and symbol keys
+  def self.default_metadata
+    @@jsonified_metadata ||= JSON.parse(@@default_metadata.to_json)
   end
 end

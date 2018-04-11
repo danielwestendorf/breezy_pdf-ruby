@@ -11,6 +11,10 @@ class BreezyPDF::HTML2PDFTest < BreezyTest
     "html"
   end
 
+  def metadata
+    BreezyPDF.default_metadata.merge(a: 1)
+  end
+
   def mocks
     mock_html_response = MiniTest::Mock.new
     mock_html_response.expect(:filename, "file.pdf")
@@ -28,7 +32,7 @@ class BreezyPDF::HTML2PDFTest < BreezyTest
     mock_render_result.expect(:submit, OpenStruct.new(download_url: "file.pdf"))
 
     mock_render_request = MiniTest::Mock.new
-    mock_render_request.expect(:new, mock_render_result, ["public.html", { a: 1 }])
+    mock_render_request.expect(:new, mock_render_result, ["public.html", metadata])
 
     [mock_html_response, mock_html_asset, mock_upload, mock_render_result, mock_render_request]
   end

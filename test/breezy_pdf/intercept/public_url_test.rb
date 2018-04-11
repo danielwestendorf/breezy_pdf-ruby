@@ -28,9 +28,9 @@ class BreezyPDF::Intercept::PublicUrlTest < BreezyTest
   def test_redirects_to_download_url
     mock_request, mock_submit = mocks
 
-    metadata = {
+    metadata = BreezyPDF.default_metadata.merge(
       "requested_url" => "https://example.com:3000/thing.pdf?a=b", "rendered_url" => "https://example.com:3000/thing?a=b"
-    }
+    )
 
     mock_request.expect(:new, mock_submit, ["https://example.com:3000/thing?a=b", metadata])
 
@@ -45,9 +45,9 @@ class BreezyPDF::Intercept::PublicUrlTest < BreezyTest
   def test_redirects_to_download_url_with_normal_port
     mock_request, mock_submit = mocks
 
-    metadata = {
+    metadata = BreezyPDF.default_metadata.merge(
       "requested_url" => "https://example.com/thing.pdf?a=b", "rendered_url" => "https://example.com/thing?a=b"
-    }
+    )
 
     mock_request.expect(:new, mock_submit, ["https://example.com/thing?a=b", metadata])
 

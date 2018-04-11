@@ -18,9 +18,9 @@ module BreezyPDF::Intercept
     end
 
     def metadata
-      {
+      BreezyPDF.default_metadata.merge(
         "requested_url" => requested_url, "rendered_url" => rendered_url
-      }
+      )
     end
 
     def rendered_url

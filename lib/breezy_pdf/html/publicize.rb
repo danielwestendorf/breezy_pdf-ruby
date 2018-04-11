@@ -14,7 +14,7 @@ module BreezyPDF::HTML
     def public_fragment
       @public_fragment ||= parsed_document.tap do
         publicize!
-        BreezyPDF.logger.info("[BreezyPDF] Replaced assets in `#{timing} seconds`")
+        BreezyPDF.logger.info("[BreezyPDF] Replaced assets in #{timing} seconds")
       end.to_html
     end
 

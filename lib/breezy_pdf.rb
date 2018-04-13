@@ -77,18 +77,18 @@ module BreezyPDF
 
   mattr_writer :default_metadata
   @@default_metadata = {
-    width:             8.5,
-    height:            11,
-    cssPageSize:       false,
-    marginTop:         0.04,
-    marginRight:       0.04,
-    marginBottom:      0.04,
-    marginLeft:        0.04,
-    landscape:         false,
-    scale:             1,
-    displayBackground: false,
-    headerTemplate:    "",
-    footerTemplate:    ""
+    # width:             8.5,
+    # height:            11,
+    # cssPageSize:       false,
+    # marginTop:         0.4,
+    # marginRight:       0.4,
+    # marginBottom:      0.4,
+    # marginLeft:        0.4,
+    # landscape:         false,
+    # scale:             1,
+    # displayBackground: false,
+    # headerTemplate:    "",
+    # footerTemplate:    ""
   }
 
   mattr_accessor :logger

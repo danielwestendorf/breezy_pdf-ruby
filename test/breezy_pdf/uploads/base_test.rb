@@ -20,8 +20,6 @@ class BreezyPDF::Uploads::BaseTest < BreezyTest
       :post, OpenStruct.new(resource),
       ["/uploads", filename: "image.png", size: fixture("file.png").size, content_type: "image/png"]
     )
-    # Complete HTTP Request
-    client_mock.expect(:put, true, ["/uploads/#{resource['id']}", {}])
 
     upload_http_mock = MiniTest::Mock.new
     upload_http_mock.expect(:request, OpenStruct.new(code: "204"), [Net::HTTP::Post])

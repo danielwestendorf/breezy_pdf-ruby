@@ -15,7 +15,6 @@ module BreezyPDF::Uploads
       @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       BreezyPDF.logger.info(%([BreezyPDF] Starting private asset upload for #{@filename}))
       upload!
-      complete_upload!
 
       @end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       BreezyPDF.logger.info(
@@ -40,14 +39,6 @@ module BreezyPDF::Uploads
 
     def file
       @file ||= File.open(@file_path)
-    end
-
-    def complete_upload!
-      BreezyPDF.logger.info(%([BreezyPDF] Initiating completion of private asset upload for #{@filename}))
-      client.put("/uploads/#{resource.id}", {})
-    rescue Net::HTTP => error
-      BreezyPDF.logger.fatal(%([BreezyPDF] Unable to complete private asset upload for #{@filename}))
-      raise CompletionError, error.message
     end
 
     def upload!

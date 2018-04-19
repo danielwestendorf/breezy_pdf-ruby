@@ -6,6 +6,18 @@ Make PDF generation a breezy-easy.
 
 No binaries to install. No reinventing the wheel to match HTML layouts. Just simple HTML to PDF generation as a Rack Middleware with support for modern CSS and JavaScript. `.pdf` any of your app's URL's for fast, out-of-process, PDF generation of that URL. Support for public and authenticated views, local development and production.
 
+#### No libraries to install.
+
+#### No fonts to manage.
+
+#### No DSL to learn.
+
+#### Works anywhere.
+
+#### Leverage modern CSS and ECMAScript.
+
+#### Magical support for Sinatra, Ruby on Rails, and any other Rack based web framework.
+
 [Sign Up](https://BreezyPDF.com/) for an account to get started.
 
 [View the Demo](https://ruby.demo.breezypdf.com) and the [Demo's Source Code](https://github.com/danielwestendorf/breezy_pdf-ruby-demo)

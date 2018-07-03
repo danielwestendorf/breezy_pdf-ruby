@@ -3,6 +3,9 @@
 module BreezyPDF::Intercept
   # :nodoc
   class Base
+    include Rack::Request::Env
+    include Rack::Request::Helpers
+
     attr_reader :app, :env
 
     def initialize(app, env)
@@ -24,17 +27,15 @@ module BreezyPDF::Intercept
     end
 
     def rendered_url
-      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{port}" \
-      "#{path}#{query_string}"
+      "#{base_url}#{path}#{query_string}"
     end
 
     def requested_url
-      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{port}" \
-      "#{env['PATH_INFO']}#{query_string}"
+      "#{base_url}#{env['PATH_INFO']}#{query_string}"
     end
 
     def base_url
-      "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{port}"
+      "#{scheme}://#{env['SERVER_NAME']}#{port}"
     end
 
     def port

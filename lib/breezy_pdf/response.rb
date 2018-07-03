@@ -17,7 +17,7 @@ module BreezyPDF
     end
 
     def method_missing(method, *_args, &_blk)
-      if body.keys.include?(method.to_s)
+      if body.key?(method.to_s)
         body[method.to_s]
       else
         super
@@ -25,7 +25,7 @@ module BreezyPDF
     end
 
     def respond_to_missing?(method, *)
-      body.keys.include?(method.to_s)
+      body.key?(method.to_s)
     end
 
     private

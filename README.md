@@ -277,8 +277,9 @@ def invoice_mailer(user, invoice)
   asset_host = Rails.env.production? ? Rails.application.config.action_controller.asset_host : "http://localhost:3000"
 
   metadata = { width: 8.5, width: 11 }
-
-  html = ActionController::Renderer.render(template "invoices/show", assigns: { invoice: invoice }, locals: { current_user: user })
+  
+  renderer = ApplicationController.renderer.new(https: true)
+  html = renderer.render(template: "invoices/show", assigns: { invoice: invoice }, locals: { current_user: user })
   pdf = BreezyPDF::HTML2PDF.new(asset_host, html, metadata)
 
   attachments["invoice-#{invoice.id}.pdf"] = pdf.to_file.read

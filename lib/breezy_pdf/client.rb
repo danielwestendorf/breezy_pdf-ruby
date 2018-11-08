@@ -26,6 +26,8 @@ module BreezyPDF
     private
 
     def headers
+      raise BreezyPDF::AuthError, "BreezyPDF.secret_api_key is not set" if BreezyPDF.secret_api_key.nil?
+
       {
         "Content-Type":  "application/json",
         "Authorization": "Bearer #{BreezyPDF.secret_api_key}"

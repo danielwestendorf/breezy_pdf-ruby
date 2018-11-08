@@ -3,6 +3,12 @@
 require "test_helper"
 
 class BreezyPDF::ClientTest < BreezyTest
+  def setup
+    BreezyPDF.setup do |config|
+      config.secret_api_key = "123"
+    end
+  end
+
   def test_post
     body = { a: 1 }
     http_mock = MiniTest::Mock.new
@@ -39,5 +45,15 @@ class BreezyPDF::ClientTest < BreezyTest
 
     assert http_mock.verify
     assert request_mock.verify
+  end
+
+  def test_no_secret_api_key
+    BreezyPDF.setup do |config|
+      config.secret_api_key = nil
+    end
+
+    assert_raises(BreezyPDF::AuthError) do
+      tested_class.new.put("/test", {})
+    end
   end
 end

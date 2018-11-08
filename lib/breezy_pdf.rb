@@ -35,6 +35,7 @@ module BreezyPDF
   autoload :HTML2PDF,      "breezy_pdf/html_2_pdf"
 
   BreezyPDFError = Class.new(StandardError)
+  AuthError      = Class.new(BreezyPDFError)
 
   mattr_accessor :secret_api_key
   @@secret_api_key = nil

@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest-stub-const", "~> 0.6"
   spec.add_development_dependency "rack-test", "~> 1.1"
   spec.add_development_dependency "rake", "~> 12.3"
-  spec.add_development_dependency "rubocop", "0.74.0"
+  spec.add_development_dependency "rubocop", "0.76.0"
 end
